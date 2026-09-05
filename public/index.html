@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ta" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>செந்தமிழ் AI - Tamil Learning & Grammar Intelligence Assistant</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">செ</div>
+        <div class="brand-info">
+          <h1>செந்தமிழ் AI</h1>
+          <p>AI Powered Tamil Learning & Grammar Assistant</p>
+        </div>
+      </a>
+
+      <div class="header-stats">
+        <div class="stat-badge xp" id="userXpBadge" title="உங்கள் அனுபவப் புள்ளிகள் (XP)">
+          <span>⚡</span>
+          <span id="userXpVal">150 XP</span>
+          <span style="font-size: 0.75rem; color: var(--text-secondary);">(நிலை <span id="userLevelVal">1</span>)</span>
+        </div>
+        <div class="stat-badge streak" id="userStreakBadge" title="தொடர் கற்றல் நாட்கள்">
+          <span>🔥</span>
+          <span id="userStreakVal">3 நாட்கள்</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-btn" id="toggleKeyboardBtn" title="தமிழ் விசைப்பலகை (Virtual Keyboard)">
+          ⌨️
+        </button>
+        <button class="icon-btn" id="toggleThemeBtn" title="வண்ண அமைப்பு (Toggle Theme)">
+          🌓
+        </button>
+        <button class="icon-btn" id="openSettingsBtn" title="அமைப்புகள் (Settings)">
+          ⚙️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="tab-navigation-wrapper">
+    <div class="tabs-container">
+      <button class="nav-tab active" data-tab="tab-grammar">
+        <span>✍️</span> இலக்கணப் பகுப்பாய்வி (Grammar)
+      </button>
+      <button class="nav-tab" data-tab="tab-chat">
+        <span>🤖</span> தமிழ் ஆசான் (AI Tutor)
+      </button>
+      <button class="nav-tab" data-tab="tab-learn">
+        <span>📖</span> படிநிலைக் கற்றல் (Learn)
+      </button>
+      <button class="nav-tab" data-tab="tab-kural">
+        <span>📜</span> திருக்குறள் (Thirukkural)
+      </button>
+      <button class="nav-tab" data-tab="tab-quiz">
+        <span>🎯</span> வினாடி வினா (Quizzes)
+      </button>
+      <button class="nav-tab" data-tab="tab-dashboard">
+        <span>📊</span> முன்னேற்றம் (Dashboard)
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+
+    <!-- TAB 1: GRAMMAR INTELLIGENCE ANALYZER -->
+    <section id="tab-grammar" class="tab-pane active">
+      <div class="section-header">
+        <h2>இலக்கணப் பிழை திருத்தி & பகுப்பாய்வு</h2>
+        <p>வாக்கியங்களை உள்ளிடுக; புணர்ச்சி (Sandhi), பால்-எண் இயைபு, பேச்சுவழக்கு மற்றும் மாத்திரை அளவுகளை உடனுக்குடன் சரிபார்க்கவும்.</p>
+      </div>
+
+      <div class="card grammar-editor-box">
+        <div class="editor-toolbar">
+          <div class="toolbar-group">
+            <label class="toggle-switch" title="ஆங்கிலத்தில் தட்டச்சு செய்யும்போது தானாகவே தமிழாக மாறும் (எ.கா: 'vanakkam' -> 'வணக்கம்')">
+              <input type="checkbox" id="transliterateToggle" checked>
+              <span>Tanglish தட்டச்சு (Phonetic)</span>
+            </label>
+            <button class="btn btn-secondary btn-sm" id="speakInputBtn" title="வாக்கியத்தை ஒலிக்கவும்">
+              🔊 வாசி
+            </button>
+            <button class="btn btn-secondary btn-sm" id="voiceInputBtn" title="குரல் மூலம் உள்ளிடவும்">
+              🎤 குரல் உள்ளீடு
+            </button>
+          </div>
+          <div class="toolbar-group">
+            <button class="btn btn-secondary btn-sm" id="clearEditorBtn">அழி (Clear)</button>
+            <button class="btn btn-primary" id="analyzeSentenceBtn">
+              <span>🔍</span> சரிபார் (Analyze)
+            </button>
+          </div>
+        </div>
+
+        <textarea
+          id="grammarInput"
+          class="editor-textarea"
+          placeholder="இங்கே உங்கள் தமிழ் வாக்கியத்தை எழுதவும்... (எ.கா: 'அந்த புத்தகம் மேசையில் உள்ளது' அல்லது 'நான் நேற்று வந்தான்')"
+        >அந்த புத்தகம் மேசையில் உள்ளது</textarea>
+
+        <div class="sample-prompts">
+          <span class="sample-label">மாதிரி வாக்கியங்கள்:</span>
+          <button class="sample-pill" data-sample="அந்த புத்தகம் நன்றாக உள்ளது">1. அந்த புத்தகம் (சந்திப் பிழை)</button>
+          <button class="sample-pill" data-sample="அவன் நேற்று பள்ளிக்கு வந்தது">2. அவன் வந்தது (பால் இயைபுப் பிழை)</button>
+          <button class="sample-pill" data-sample="நான் நாளை ஊருக்கு போறேன்">3. போறேன் (பேச்சு வழக்கு)</button>
+          <button class="sample-pill" data-sample="அவருக்கு புத்தகம் கொடு">4. அவருக்கு கொடு (நான்காம் வேற்றுமை)</button>
+          <button class="sample-pill" data-sample="கற்க கசடறக் கற்பவை கற்றபின் நிற்க அதற்குத் தக">5. திருக்குறள் (பிழையற்ற வாக்கியம்)</button>
+        </div>
+      </div>
+
+      <!-- Results Container -->
+      <div id="grammarResults" class="results-dashboard" style="display: none;">
+        <!-- Status Banner -->
+        <div id="resultStatusBanner" class="status-banner">
+          <div class="status-title">
+            <span id="statusIcon">⚡</span>
+            <span id="statusTitleText">பகுப்பாய்வு முடிவுகள்</span>
+          </div>
+          <div id="statusGradeText" class="badge">சிறப்பு</div>
+        </div>
+
+        <!-- Before & After Comparison -->
+        <div class="comparison-container">
+          <div class="sentence-card">
+            <div class="sentence-card-header">
+              <span>உள்ளீடு செய்யப்பட்ட வாக்கியம் (Original)</span>
+              <span id="originalWordCount">0 சொற்கள்</span>
+            </div>
+            <div id="originalSentenceDisplay" class="sentence-text"></div>
+          </div>
+
+          <div class="sentence-card">
+            <div class="sentence-card-header">
+              <span>திருத்தப்பட்ட வடிவம் (Corrected)</span>
+              <button class="btn btn-secondary btn-sm" id="copyCorrectedBtn" title="நகலெடு">📋 நகலெடு</button>
+            </div>
+            <div id="correctedSentenceDisplay" class="sentence-text corrected"></div>
+          </div>
+        </div>
+
+        <!-- Error Cards List -->
+        <div class="card">
+          <h3 style="margin-bottom: 1rem; font-size: 1.15rem;">கண்டறியப்பட்ட இலக்கணக் குறிப்புகள் & பிழைகள்</h3>
+          <div id="errorCardsList" class="error-list">
+            <!-- Populated via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Metrics & Mora (மாத்திரை) Breakdown -->
+        <div class="card">
+          <h3 style="margin-bottom: 1rem; font-size: 1.15rem;">ஒலி & மாத்திரை அளவுகள் (Phonological Metrics)</h3>
+          <div class="metrics-row">
+            <div class="metric-pill">
+              <div class="metric-val" id="totalMoraVal">0</div>
+              <div class="metric-label">மொத்த மாத்திரை (Morae)</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-val" id="letterCountVal">0</div>
+              <div class="metric-label">எழுத்துக்கள் (Letters)</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-val" id="uyirCountVal">0</div>
+              <div class="metric-label">உயிர் எழுத்துக்கள்</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-val" id="meiCountVal">0</div>
+              <div class="metric-label">மெய் எழுத்துக்கள்</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-val" id="vallinamVal">0</div>
+              <div class="metric-label">வல்லினம் (க்..ற்)</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-val" id="mellinamVal">0</div>
+              <div class="metric-label">மெல்லினம் (ங்..ன்)</div>
+            </div>
+            <div class="metric-pill">
+              <div class="metric-val" id="idaiyinamVal">0</div>
+              <div class="metric-label">இடையினம் (ய்..ள்)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parts of Speech (சொல் வகைப்பாடு) -->
+        <div class="card">
+          <h3 style="margin-bottom: 1rem; font-size: 1.15rem;">சொல் வகைப்பாடு (Parts of Speech)</h3>
+          <div id="posTagsContainer" class="pos-tag-cloud">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- AI Scholar Detailed Explanation -->
+        <div class="ai-tutor-box">
+          <div class="ai-tutor-header">
+            <div class="ai-tutor-title">
+              <span>🏛️</span>
+              <span>செந்தமிழ் ஆசானின் விரிவுரை (AI Linguistic Insights)</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="speakAIExplanationBtn" title="ஆசான் உரையை ஒலிக்கவும்">
+              🔊 ஆடியோ
+            </button>
+          </div>
+          <div id="aiExplanationText" class="ai-content">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: AI TAMIL TUTOR CHAT -->
+    <section id="tab-chat" class="tab-pane">
+      <div class="section-header">
+        <h2>தமிழ் ஆசான் - உரையாடல் நுண்ணறிவு</h2>
+        <p>தமிழ் இலக்கணம், இலக்கியம், சொற்களின் வேர்ச்சொல் அல்லது பொதுவான ஐயங்களை ஆசானிடம் உரையாடித் தெளிவுபெறுக.</p>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-bubble tutor">
+            <div class="msg-header">
+              <span>🏛️ செந்தமிழ் ஆசான்</span>
+              <button class="speaker-btn" onclick="speakText(this.parentElement.nextElementSibling.textContent, this)">🔊</button>
+            </div>
+            <div class="msg-body">
+              வணக்கம்! நான் உங்கள் தமிழ் ஆசான். தமிழ் இலக்கணப் புணர்ச்சி விதிகள், நன்னூல், தொல்காப்பியம், திருக்குறள் நயங்கள் அல்லது வாக்கிய அமைப்புகள் குறித்து நீங்கள் எதை வேண்டுமானாலும் கேட்கலாம்!
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Prompt Suggestions -->
+        <div style="padding: 0.6rem 1.25rem; background-color: var(--bg-card); display: flex; gap: 0.5rem; overflow-x: auto;">
+          <button class="sample-pill" onclick="sendQuickPrompt('புணர்ச்சி விதிகள் எத்தனை வகைப்படும்? விளக்குக')">புணர்ச்சி வகைகள்</button>
+          <button class="sample-pill" onclick="sendQuickPrompt('வலிமிகும் இடங்கள் 4 எடுத்துக்காட்டுகளுடன் கூறு')">வலிமிகும் இடங்கள்</button>
+          <button class="sample-pill" onclick="sendQuickPrompt('திருக்குறள் சிறப்புகள் மற்றும் அமைப்பை விளக்குக')">திருக்குறள் அமைப்பு</button>
+          <button class="sample-pill" onclick="sendQuickPrompt('எழுவாய்-பயனிலை இயைபு விதிகள் என்ன?')">எழுவாய்-பயனிலை இயைபு</button>
+        </div>
+
+        <div class="chat-input-area">
+          <input
+            type="text"
+            id="chatInput"
+            class="chat-input"
+            placeholder="ஆசானிடம் கேட்க வேண்டிய வினாவை இங்கே தட்டச்சு செய்க..."
+          />
+          <button class="icon-btn mic-btn" id="chatMicBtn" title="குரல் மூலம் பேசுக">
+            🎤
+          </button>
+          <button class="btn btn-primary" id="sendChatBtn">
+            <span>அனுப்பு</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: STRUCTURED LEARNING CURRICULUM -->
+    <section id="tab-learn" class="tab-pane">
+      <div class="section-header">
+        <h2>படிநிலைக் கற்றல் (Structured Learning)</h2>
+        <p>தமிழ் எழுத்துக்கள், ஐந்திலக்கணப் பாடங்கள் மற்றும் அன்றாட சொற்களஞ்சியத்தைக் கற்றுக் கொள்ளுங்கள்.</p>
+      </div>
+
+      <!-- Sub-tabs -->
+      <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <button class="btn btn-primary" id="subTabAlphabetBtn">1. எழுத்துக்கள் (Alphabet)</button>
+        <button class="btn btn-secondary" id="subTabGrammarBtn">2. ஐந்திலக்கணம் (5 Divisions)</button>
+        <button class="btn btn-secondary" id="subTabVocabBtn">3. சொற்களஞ்சியம் (Vocabulary)</button>
+      </div>
+
+      <!-- View 1: Alphabet -->
+      <div id="subViewAlphabet">
+        <div class="card" style="margin-bottom: 1.5rem;">
+          <h3 style="color: var(--accent-gold); margin-bottom: 0.5rem;">உயிர் எழுத்துக்கள் (12 Vowels) & ஆய்தம் (1)</h3>
+          <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.9rem;">எழுத்தின் மீது கிளிக் செய்து அதன் சரியான உச்சரிப்பைக் கேட்கலாம்.</p>
+          <div class="alphabet-grid" id="uyirGrid">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="color: var(--accent-blue); margin-bottom: 0.5rem;">மெய் எழுத்துக்கள் (18 Consonants)</h3>
+          <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.9rem;">வல்லினம் (கசடதபற), மெல்லினம் (ஙஞணநமன), இடையினம் (யரலவழள) வகைப்பாடு.</p>
+          <div class="alphabet-grid" id="meiGrid">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- View 2: Five Divisions of Grammar -->
+      <div id="subViewGrammar" style="display: none;">
+        <div id="grammarTopicsAccordion" style="display: flex; flex-direction: column; gap: 1rem;">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- View 3: Vocabulary Bank -->
+      <div id="subViewVocab" style="display: none;">
+        <div class="card" style="margin-bottom: 1.5rem;">
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+            <input type="text" id="vocabSearchInput" class="form-control" style="max-width: 320px;" placeholder="சொல்லைத் தேடுக... (Search words)">
+            <select id="vocabCategoryFilter" class="form-control" style="max-width: 250px;">
+              <option value="அனைத்தும்">அனைத்து பிரிவுகளும்</option>
+              <option value="அன்றாட சொற்கள் (Daily)">அன்றாட சொற்கள்</option>
+              <option value="உறவுகள் (Family)">உறவுகள்</option>
+              <option value="இயற்கை (Nature)">இயற்கை</option>
+              <option value="உணவு (Food)">உணவு</option>
+              <option value="உடற்பாகங்கள் (Body)">உடற்பாகங்கள்</option>
+              <option value="கல்வி & தொழில் (Education & Work)">கல்வி & தொழில்</option>
+              <option value="உணர்ச்சிகள் (Emotions)">உணர்ச்சிகள்</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-3" id="vocabGrid">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: THIRUKKURAL EXPLORER -->
+    <section id="tab-kural" class="tab-pane">
+      <div class="section-header">
+        <h2>திருக்குறள் முற்றம் (Thirukkural Explorer)</h2>
+        <p>உலகப் பொதுமறையான திருக்குறளின் சொல்லமைப்பு, பதவுரை மற்றும் இலக்கண நயங்களை ஆழமாகக் கற்றல்.</p>
+      </div>
+
+      <div class="kural-hero-card" id="dailyKuralCard">
+        <span class="kural-tag" id="kuralNumberTag">குறள் எண்: 1 | கடவுள் வாழ்த்து</span>
+        <div class="kural-lines" id="kuralVerseLines">
+          அகர முதல எழுத்தெல்லாம் ஆதி<br>
+          பகவன் முதற்றே உலகு.
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem;">
+          <button class="btn btn-secondary btn-sm" id="speakKuralBtn">🔊 குறளைக் கேள்</button>
+          <button class="btn btn-secondary btn-sm" id="nextKuralBtn">அடுத்த குறள் ❯</button>
+        </div>
+
+        <div class="card" style="margin-bottom: 1.25rem;">
+          <h4 style="color: var(--accent-gold); margin-bottom: 0.75rem;">பதவுரை (Word-by-Word Grammatical Breakdown)</h4>
+          <table class="padha-urai-table">
+            <thead>
+              <tr>
+                <th>சொல் (Word)</th>
+                <th>பொருள் (Meaning)</th>
+                <th>இலக்கணக் குறிப்பு (Grammar Note)</th>
+              </tr>
+            </thead>
+            <tbody id="padhaUraiTableBody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h4 style="color: var(--accent-green); margin-bottom: 0.5rem;">பொழிப்புரை (Tamil Meaning)</h4>
+            <p id="kuralMeaningTa" style="line-height: 1.7; font-size: 1rem;"></p>
+          </div>
+          <div class="card">
+            <h4 style="color: var(--accent-blue); margin-bottom: 0.5rem;">ஆங்கில விளக்கம் (English Translation)</h4>
+            <p id="kuralMeaningEn" style="line-height: 1.7; font-size: 0.95rem;"></p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.25rem;">
+          <h4 style="color: #fb7185; margin-bottom: 0.5rem;">அணி & இலக்கண நயம் (Literary Figure)</h4>
+          <p id="kuralGrammarExp" style="line-height: 1.7; color: var(--text-secondary);"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: GAMIFIED QUIZZES -->
+    <section id="tab-quiz" class="tab-pane">
+      <div class="section-header">
+        <h2>பயிற்சிகள் & வினாடி வினா (Quizzes & Challenges)</h2>
+        <p>சந்தி விதிகள், காலங்கள், வாக்கிய அமைப்பு மற்றும் சொல்லிலக்கணத் திறனைச் சோதித்து XP புள்ளிகளைப் பெறுங்கள்!</p>
+      </div>
+
+      <div class="quiz-wrapper">
+        <!-- Category Selector -->
+        <div class="card" style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-primary btn-sm quiz-cat-btn active" data-cat="all">அனைத்தும்</button>
+            <button class="btn btn-secondary btn-sm quiz-cat-btn" data-cat="sandhi">புணர்ச்சி (Sandhi)</button>
+            <button class="btn btn-secondary btn-sm quiz-cat-btn" data-cat="tense_concord">பால்-எண் இயைபு</button>
+            <button class="btn btn-secondary btn-sm quiz-cat-btn" data-cat="vocabulary">சொற்களஞ்சியம்</button>
+            <button class="btn btn-secondary btn-sm quiz-cat-btn" data-cat="general_ilakkanam">பொது இலக்கணம்</button>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="aiGenerateQuizBtn" title="AI மூலம் புதிய கேள்வியை உருவாக்கு">
+            ✨ AI வினா உருவாக்கம்
+          </button>
+        </div>
+
+        <!-- Quiz Container -->
+        <div class="quiz-card" id="activeQuizCard">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; color: var(--text-secondary);" id="quizCounterText">வினா 1 / 5</span>
+            <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: var(--accent-gold); padding: 0.2rem 0.6rem; border-radius: 4px;" id="quizCategoryBadge">புணர்ச்சி</span>
+          </div>
+
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quizProgressBar"></div>
+          </div>
+
+          <div>
+            <div class="quiz-question-text" id="quizQuestionText">கேள்வி ஏற்றப்படுகிறது...</div>
+            <div class="quiz-question-sub" id="quizQuestionEn"></div>
+          </div>
+
+          <div class="quiz-options" id="quizOptionsContainer">
+            <!-- Populated via JS -->
+          </div>
+
+          <div class="quiz-feedback-box" id="quizFeedbackBox">
+            <div style="font-weight: 700; margin-bottom: 0.3rem;" id="quizFeedbackTitle"></div>
+            <div style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;" id="quizFeedbackDesc"></div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+            <button class="btn btn-primary" id="nextQuizQuestionBtn" style="display: none;">
+              அடுத்த கேள்வி ❯
+            </button>
+          </div>
+        </div>
+
+        <!-- Quiz Complete Summary Modal/Box -->
+        <div class="card" id="quizSummaryCard" style="display: none; text-align: center; padding: 2.5rem;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+          <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem;">பயிற்சி நிறைவடைந்தது!</h3>
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem;" id="quizScoreSummaryText"></p>
+          <div style="display: flex; justify-content: center; gap: 1rem;">
+            <button class="btn btn-primary" id="restartQuizBtn">மீண்டும் பயிற்சி செய்</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: USER DASHBOARD & PROGRESS -->
+    <section id="tab-dashboard" class="tab-pane">
+      <div class="section-header">
+        <h2>முன்னேற்றப் பலகை (Dashboard)</h2>
+        <p>உங்கள் கற்றல் சாதனைகள், இலக்கணப் பயிற்சி புள்ளிவிவரங்கள் மற்றும் தரவுத்தள நிலை.</p>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 1.5rem;">
+        <div class="card" style="text-align: center;">
+          <div style="font-size: 2.2rem; font-weight: 800; color: var(--accent-gold);" id="dashXpVal">150</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;">மொத்த XP புள்ளிகள்</div>
+        </div>
+        <div class="card" style="text-align: center;">
+          <div style="font-size: 2.2rem; font-weight: 800; color: #f97316;" id="dashStreakVal">3</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;">தொடர் கற்றல் (நாட்கள்)</div>
+        </div>
+        <div class="card" style="text-align: center;">
+          <div style="font-size: 2.2rem; font-weight: 800; color: var(--accent-green);" id="dashChecksVal">0</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;">இலக்கணப் பகுப்பாய்வுகள்</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="margin-bottom: 1rem;">சாதனைப் பதக்கங்கள் (Badges)</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.75rem;">
+            <div class="metric-pill" style="border-color: rgba(245, 158, 11, 0.4);">
+              <div style="font-size: 1.8rem;">🌱</div>
+              <div style="font-weight: 700; font-size: 0.85rem; margin-top: 0.3rem;">தொடக்க மாணவன்</div>
+              <div style="font-size: 0.7rem; color: #10b981;">பெறப்பட்டது ✔️</div>
+            </div>
+            <div class="metric-pill">
+              <div style="font-size: 1.8rem;">✍️</div>
+              <div style="font-weight: 700; font-size: 0.85rem; margin-top: 0.3rem;">சந்தி வித்தகர்</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">நிலை 2 இல் திறக்கப்படும்</div>
+            </div>
+            <div class="metric-pill">
+              <div style="font-size: 1.8rem;">📜</div>
+              <div style="font-weight: 700; font-size: 0.85rem; margin-top: 0.3rem;">குறள் காவலர்</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">நிலை 3 இல் திறக்கப்படும்</div>
+            </div>
+            <div class="metric-pill">
+              <div style="font-size: 1.8rem;">👑</div>
+              <div style="font-weight: 700; font-size: 0.85rem; margin-top: 0.3rem;">செந்தமிழ் அறிஞர்</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">நிலை 5 இல் திறக்கப்படும்</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom: 1rem;">கணினி & தரவுத்தள இணைப்பு நிலை</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem;">
+            <div style="display: flex; justify-content: space-between; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color);">
+              <span>MongoDB தரவுத்தளம்:</span>
+              <span id="dbStatusBadge" style="color: #10b981; font-weight: 700;">இணைக்கப்பட்டுள்ளது ✔️</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color);">
+              <span>Google Gemini AI நிலை:</span>
+              <span id="geminiStatusBadge" style="color: var(--accent-gold); font-weight: 700;">உள்ளமைவு தயார்</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color);">
+              <span>உள்ளூர் இலக்கணப் பொறி:</span>
+              <span style="color: #10b981; font-weight: 700;">செயலில் உள்ளது ✔️</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>உரலி (Server Port):</span>
+              <span style="font-family: monospace; color: var(--accent-blue);">http://localhost:3000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Virtual Tamil Keyboard Drawer -->
+  <div class="vk-container" id="virtualKeyboardContainer">
+    <!-- Populated via virtualKeyboard.js -->
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-display); font-size: 1.4rem;">அமைப்புகள் (Settings)</h3>
+        <button class="icon-btn" id="closeSettingsBtn">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label for="settingsUsername">பயனர் பெயர் (Learner Name)</label>
+        <input type="text" id="settingsUsername" class="form-control" value="செந்தமிழ் மாணவன்">
+      </div>
+
+      <div class="form-group">
+        <label for="settingsApiKey">Google Gemini API Key (Optional)</label>
+        <input type="password" id="settingsApiKey" class="form-control" placeholder="AI-generated chat & deep explanations">
+        <small style="color: var(--text-muted); font-size: 0.75rem;">உங்களிடம் Gemini API Key இருந்தால் உள்ளிடலாம். விசை இல்லாவிட்டாலும் உள்ளமைக்கப்பட்ட இலக்கணப் பொறி இயங்கும்.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="settingsAudioSpeed">குரல் வேகம் (Audio Speed): <span id="audioSpeedVal">0.9x</span></label>
+        <input type="range" id="settingsAudioSpeed" min="0.5" max="1.5" step="0.1" value="0.9" style="accent-color: var(--accent-gold);">
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+        <button class="btn btn-secondary" id="cancelSettingsBtn">ரத்து செய்</button>
+        <button class="btn btn-primary" id="saveSettingsBtn">சேமி (Save)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>செந்தமிழ் AI - தமிழ் மொழி கற்றல் மற்றும் இலக்கண நுண்ணறிவு மென்பொருள் &bull; Node.js & MongoDB & Web APIs</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/transliterate.js"></script>
+  <script src="/js/virtualKeyboard.js"></script>
+  <script src="/js/speech.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
