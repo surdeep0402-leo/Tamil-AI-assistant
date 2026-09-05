@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { connectDB, getDBStatus } = require('./src/config/db');
+const { seedDatabase } = require('./src/seeds/seedData');
 
 // Route imports
 const grammarRoutes = require('./src/routes/grammarRoutes');
@@ -15,8 +16,12 @@ const speechRoutes = require('./src/routes/speechRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB and seed if fresh database
+connectDB().then((conn) => {
+  if (conn) {
+    seedDatabase().catch((e) => console.warn('[Auto-seed notice]:', e.message));
+  }
+});
 
 // Global Middlewares
 app.use(cors());
